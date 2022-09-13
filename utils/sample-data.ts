@@ -1,4 +1,4 @@
-import { User, UserType } from '../interfaces'
+import { User, UserType, SpotTheDifferenceGame } from '../interfaces'
 
 const sampleDataPwArray = process.env.SAMPLE_DATA_PW_ARRAY;
 const [alicePw, bobPw, carolinePw, davePw] = Array.from(sampleDataPwArray);
@@ -10,3 +10,5 @@ export const sampleUserData: User[] = [
   { id: '103', username: 'Caroline', email: 'caroline@outlook.com', password: carolinePw, type: UserType.superAdmin },
   { id: '104', username: 'Dave', email: 'dave@hotmail.com', password: davePw, type: UserType.normalUser },
 ]
+
+export const sampleSpotTheDifferenceGames: SpotTheDifferenceGame[] = []

@@ -28,8 +28,8 @@ model User {
   password String
   email    String @unique
 
-  passwordResetToken String? @unique
-  passwordResetExpiryDate    DateTime?
+  passwordResetToken      String?   @unique
+  passwordResetExpiryDate DateTime?
 
   type       UserType
   admin      Admin?
@@ -37,21 +37,21 @@ model User {
   superAdmin SuperAdmin?
 
   userCourses UserCourse[]
-  
+
   @@index([passwordResetToken])
   @@map("users")
 }
 
 model NormalUser {
-  user            User   @relation(fields: [userId], references: [id])
-  userId          String @id
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @id
 
   @@map("normalUsers")
 }
 
 model Admin {
-  user            User   @relation(fields: [userId], references: [id])
-  userId          String @id
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @id
 
   createdCourses Course[]
 
@@ -59,8 +59,8 @@ model Admin {
 }
 
 model SuperAdmin {
-  user            User   @relation(fields: [userId], references: [id])
-  userId          String @id
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @id
 
   @@map("superAdmins")
 }
@@ -79,7 +79,6 @@ model UserCourse {
   stars      Int
 
   @@unique([userId, courseId])
-
   @@map("userCourses")
 }
 
@@ -170,9 +169,14 @@ model Game {
 }
 
 model SpotTheDifferenceGame {
-  id     String @id @default(cuid())
-  game   Game   @relation(fields: [gameId], references: [id])
-  gameId String @unique
+  id           String  @id @default(cuid())
+  game         Game    @relation(fields: [gameId], references: [id])
+  gameId       String  @unique
+  leftImageId  String
+  rightImageId String
+  differences  Float[]
+
+  @@map("spotTheDifferenceGames")
 }
 
 model MatchingGame {
@@ -186,4 +190,3 @@ model SortingGame {
   game   Game   @relation(fields: [gameId], references: [id])
   gameId String @unique
 }
-

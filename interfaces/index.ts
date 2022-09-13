@@ -126,6 +126,9 @@ export type Game = {
 export type SpotTheDifferenceGame = {
   id: string;
   gameId: string;
+  leftImageId: string;
+  rightImageId: string;
+  differences: Float64Array;
 }
 
 export type MatchingGame = {

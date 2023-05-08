@@ -191,6 +191,7 @@ model Image {
   Course                     Course[]
   QuizGameQuestion           QuizGameQuestion[]
   QuizGameOption             QuizGameOption[]
+  MatchingGameImage          MatchingGameImage?
 
   @@map("images")
 }
@@ -218,6 +219,7 @@ model Game {
   assetId               String                 @id
   asset                 Asset                  @relation(fields: [assetId], references: [id], onDelete: Cascade)
   matchingGame          MatchingGame?
+  sortingGame           SortingGame?
   spotTheDifferenceGame SpotTheDifferenceGame?
   QuizGame              QuizGame?
 
@@ -236,8 +238,26 @@ model SpotTheDifferenceGame {
 }
 
 model MatchingGame {
-  gameId String @id
-  game   Game   @relation(fields: [gameId], references: [assetId], onDelete: Cascade)
+  gameId            String              @id
+  game              Game                @relation(fields: [gameId], references: [assetId], onDelete: Cascade)
+  MatchingGameImage MatchingGameImage[]
+}
+
+model SortingGame {
+  gameId String              @id
+  game   Game                @relation(fields: [gameId], references: [assetId], onDelete: Cascade)
+  images MatchingGameImage[]
+}
+
+model MatchingGameImage {
+  id                String       @id @default(cuid())
+  index             Int
+  image             Image        @relation(fields: [imageId], references: [assetId])
+  imageId           String       @unique
+  matchingGame      MatchingGame @relation(fields: [matchingGameId], references: [gameId], onDelete: Cascade)
+  matchingGameId    String
+  SortingGame       SortingGame? @relation(fields: [sortingGameGameId], references: [gameId])
+  sortingGameGameId String?
 }
 
 model QuizGame {

@@ -44,6 +44,7 @@ export const Bucket = ({
   errors,
 }: BucketProp) => {
   const items: Item[] = watch(`${registerLabel}.items`, bucket.items);
+
   const handleOnItemDelete = (idx: number) => () => {
     items.splice(idx, 1);
     setValue(`${registerLabel}.items`, items);

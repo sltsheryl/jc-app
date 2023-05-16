@@ -17,7 +17,7 @@ import MyAccordion from '../../../../../../components/course/content/editor/MyAc
 import UploadImageButton from '../../../../../../components/course/content/editor/UploadImageButton';
 import UploadVideoButton from '../../../../../../components/course/content/editor/UploadVideoButton';
 import QuizCreator from '../../../../../../components/quiz-editor/Creator';
-import SortingGameCreator from '../../../../../../components/sorting-game-editor/Creator';
+import SortingGameCreator, { EditorSerializedSortingGame } from '../../../../../../components/sorting-game-editor/Creator';
 import { CourseStructure, getCourseStructure } from '../../../../../../lib/server/course';
 import { createOrUpdateAsset, validatePageFormValues } from '../../../../../../lib/editor';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -61,7 +61,7 @@ export type EditorPageFormValues = {
     questions: EditorSerializedQuizQuestion[];
   };
   // TODO: intergrate sorting game
-  sortingGame: any;
+  sortingGame: EditorSerializedSortingGame;
   matchingGame: EditorSerializedMatchingGame;
 };
 
@@ -239,7 +239,7 @@ const EditContentPage = ({ id, courseStructure: initialCourseStructure, formValu
                     <option value='matchingGame'>Matching Game</option>
                   </Select>
                   {interactiveType === 'quizGame' && <QuizCreator useFormReturns={useFormReturns} />}
-                  {interactiveType === 'sortGame' && <SortingGameCreator useFormReturns={useFormReturns} />}
+                  {interactiveType === 'sortingGame' && <SortingGameCreator useFormReturns={useFormReturns} />}
                   {interactiveType === 'matchingGame' && <MatchingGameCreator useFormReturns={useFormReturns} />}
                 </Box>
               )}

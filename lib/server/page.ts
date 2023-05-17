@@ -6,6 +6,8 @@ import prisma from '../prisma';
 import { findUniqueMatchingGame } from './matchingGame';
 import { findUniqueQuiz } from './quiz';
 import { findQuiz } from './quiz';
+import { findUniqueSortingGame } from './sortingGame';
+import { EditorSerializedSortingGame } from '../../components/sorting-game-editor/Creator';
 
 const getEditorQuizGame = async (gameId: string): Promise<{ questions: EditorSerializedQuizQuestion[] }> => {
   const prismaQuiz = await prisma.quizGame.findUnique({
@@ -54,6 +56,21 @@ const getEditorMatchingGame = async (gameId: string): Promise<EditorSerializedMa
     duration: matchingGame.duration,
     images: matchingGame.images.map(image => image.image),
   };
+};
+
+const getEditorSortingGame = async (gameId: string): Promise<EditorSerializedSortingGame> => {
+  const sortingGame = await findUniqueSortingGame(gameId);
+  const buckets = sortingGame.buckets.map(bucket => {
+    const items = bucket.items.map(item => {
+      if (typeof item === 'string') {
+        return { type: 'text', text: item };
+      } else {
+        return { type: 'image', image: item.image };
+      }
+    });
+    return { text: bucket.text, items };
+  });
+  return { buckets } as EditorSerializedSortingGame;
 };
 
 // fill in here with whatever value is needed for the SSR form data

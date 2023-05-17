@@ -69,6 +69,22 @@ const handleGame = async (data: EditorPageFormValues) => {
       return (await axios.post(`/api/matching-game`, { ...data.matchingGame })).data.data.gameId;
     }
   }
+
+  if (data.interactiveType == 'sortingGame') {
+    // attempt to upload all images, this might not be a good idea. If something fails, it is hard to surface to the frontend individually which failed
+    // alternatively, we start uploading the moment the image is selected, but those does not have a good way to handle local changes (we risk uploading unused images to the cloud, without cleanup S3 will fill up)
+    data.sortingGame.images = await Promise.all(
+      data.sortingGame.images.map(async image => {
+        image.assetId = image._uploadedFile ? await uploadFile(image._uploadedFile) : image.assetId;
+        return image;
+      }),
+    );
+    if (data.originalAssetType === 'game' && data.originalInteractiveType === 'sortingGame') {
+      return (await axios.put(`/api/sorting-game/${data.originalAssetId}`, { ...data.sortingGame })).data.data.gameId;
+    } else {
+      return (await axios.post(`/api/sorting-game`, { ...data.sortingGame })).data.data.gameId;
+    }
+  }
 };
 
 export const validatePageFormValues = (data: EditorPageFormValues) => {

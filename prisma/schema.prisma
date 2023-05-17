@@ -192,6 +192,7 @@ model Image {
   QuizGameQuestion           QuizGameQuestion[]
   QuizGameOption             QuizGameOption[]
   MatchingGameImage          MatchingGameImage?
+  sortingGameImage           SortingGameImage?
 
   @@map("images")
 }
@@ -221,6 +222,7 @@ model Game {
   matchingGame          MatchingGame?
   spotTheDifferenceGame SpotTheDifferenceGame?
   QuizGame              QuizGame?
+  sortingGame           SortingGame?
 
   @@map("games")
 }
@@ -253,6 +255,39 @@ model MatchingGameImage {
 
   matchingGame   MatchingGame @relation(fields: [matchingGameId], references: [gameId], onDelete: Cascade)
   matchingGameId String
+}
+
+model SortingGame {
+  gameId  String             @id
+  game    Game               @relation(fields: [gameId], references: [assetId], onDelete: Cascade)
+  text    String
+  buckets SortingGameBucket[]
+}
+
+model SortingGameBucket {
+  id       String                @id @default(cuid())
+  index    Int
+  bucketName     String
+  items    SortingGameItem[]
+  game     SortingGame @relation(fields: [sortingGameId], references: [gameId], onDelete: Cascade)
+  sortingGameId String
+}
+
+model SortingGameItem {
+  id               String        @id @default(cuid())
+  index            Int
+  itemType         ItemType
+  text             String?
+  image            Image?        @relation(fields: [imageId], references: [assetId])
+  imageId          String?
+  sortingBucket    SortingGameBucket @relation(fields: [sortingBucketId], references: [id])
+  sortingBucketId  String
+  sortingGameId   String
+}
+
+enum ItemType {
+  TEXT
+  IMAGE
 }
 
 model QuizGame {

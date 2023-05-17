@@ -8,6 +8,8 @@ export type SortingGame = {
   buckets: Bucket[];
 };
 
+export type EditorSerializedSortingGame = SortingGame;
+
 type SortingGameCreatorProp = {
   useFormReturns: UseFormReturn<any>;
 };

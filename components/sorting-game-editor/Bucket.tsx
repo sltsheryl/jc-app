@@ -19,11 +19,16 @@ const AddItemButton = ({ onClick }) => {
   );
 };
 
-// TODO: update with image
-export type Bucket = {
-  text: string;
-  items: Item[];
+export type Item = {
+  type: 'text' | 'image';
+  text: string | null;
+  image: File | null;
 };
+// // TODO: update with image
+// export type Bucket = {
+//   text: string;
+//   items: Item[];
+// };
 
 type BucketProp = {
   registerLabel: string;
@@ -50,6 +55,7 @@ export const Bucket = ({
     setValue(`${registerLabel}.items`, items);
     clearErrors();
   };
+
   return (
     <Flex bg='white' borderRadius={8} px={8} flexDir='column' w='100%' pb={2}>
       <Flex justifyContent='right'>
